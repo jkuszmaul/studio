@@ -1,0 +1,28 @@
+YARN = "$(location @nodejs_linux_amd64//:node) $(location .yarn/yarn-wrapper.js)"
+
+genrule(
+    name = "build_web",
+    srcs = glob(
+        [
+            "packages/**/*",
+            "patches/*.patch",
+            "web/**/*",
+            "*.json",
+            ".yarn/plugins/**/*",
+            ".yarn/yarn-wrapper.js",
+            ".yarn/releases/**/*",
+            "yarn.lock",
+            ".yarnrc.yml",
+        ],
+        exclude = ["web/.webpack"],
+    ),
+    outs = ["foobar.tar.gz"],
+    cmd = "cp yarn.lock yarn2.lock; " + YARN + " install ; " + YARN + " web:build:dev; tar --directory=web/.webpack -zcvf $(location foobar.tar.gz) ./",
+    tags = [
+        "local",
+        "requires-network",
+    ],
+    tools = [
+        "@nodejs_linux_amd64//:node",
+    ],
+)
