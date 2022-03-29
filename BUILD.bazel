@@ -17,7 +17,7 @@ genrule(
         exclude = ["web/.webpack"],
     ),
     outs = ["foobar.tar.gz"],
-    cmd = "cp yarn.lock yarn2.lock; " + YARN + " install ; " + YARN + " web:build:dev; tar --directory=web/.webpack -zcvf $(location foobar.tar.gz) ./",
+    cmd = "cp yarn.lock yarn2.lock; " + YARN + " install ; " + YARN + " web:build:prod; tar --directory=web/.webpack -zcvf $(location foobar.tar.gz) ./",
     tags = [
         "local",
         "requires-network",
